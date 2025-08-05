@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LearnMate Space Edition</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    const responseElement = document.getElementById("response") || document.createElement("p");
+    if (!document.getElementById("response")) {
+        responseElement.id = "response";
+        document.body.appendChild(responseElement);
+    }
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault(); // ✅ Prevent page reload
+
+        const rollNo = document.getElementById("rollNo").value;
+        const password = document.getElementById("password").value;
+
+        fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ rollNo, password })
+        })
+        .then(async res => {
+            const data = await res.json();
+            if (res.ok) {
+                responseElement.style.color = "green";
+                responseElement.textContent = data.message;
+            } else {
+                responseElement.style.color = "red";
+                responseElement.textContent = data.message;
+            }
+        })
+        .catch(err => {
+            responseElement.textContent = "Error connecting to server.";
+            responseElement.style.color = "red";
+            console.error(err);
+        });
+    });
+});
+</script>
+
+
+
+<style>
+
+  @keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 4s ease infinite;
+}
+
+  @keyframes tabTransition {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-tab-transition {
+  animation: tabTransition 0.6s ease-in-out;
+}
+
+  /* Particle Burst Effect */
+.burst-container {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00E5FF;
+  opacity: 0.8;
+  animation: particleMove 0.8s ease-out forwards;
+}
+
+@keyframes particleMove {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5) translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
+
+@keyframes borderMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+ /* Glass Profile Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 229, 255, 0.15);
+}
+
+.glass-card img {
+  border-radius: 50%;
+}
+
+.glass-card h2 {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.glass-card p {
+  font-size: 1.125rem; /* text-lg */
+  color: #fff;
+}
+
+
+/* Animated Border Glow */
+@keyframes border-glow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.animate-border-glow {
+  background-size: 200% 200%;
+  animation: border-glow 3s linear infinite;
+  border-radius: inherit;
+}
+
+/* Text Glow */
+@keyframes glow {
+  0% { text-shadow: 0 0 10px #00E5FF, 0 0 20px #00E5FF; }
+  100% { text-shadow: 0 0 20px #FF4081, 0 0 40px #FF4081; }
+}
+.animate-glow {
+  animation: glow 1.8s ease-in-out infinite alternate;
+}
+
+  .glass-sidebar {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-sidebar:hover {
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+}
+  nav button {
+  position: relative;
+  overflow: hidden;
+}
+nav button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+  transition: all 0.4s ease;
+}
+nav button:hover::before {
+  left: 100%;
+}
+  .glass-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 229, 255, 0.3);
+}
+.animate-glow {
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  0% { text-shadow: 0 0 10px #00E5FF, 0 0 20px #00E5FF; }
+  100% { text-shadow: 0 0 20px #FF4081, 0 0 40px #FF4081; }
+}
+  @keyframes fade-in {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.animate-fade-in {
+  animation: fade-in 0.8s ease-in-out;
+}
+
+:root {
+  --primary: #1B1F3B; /* Space Dark */
+  --secondary: #0D0D1A;
+  --accent: #8E24AA; /* Purple Accent */
+  --hover: #00E5FF; /* Neon Blue */
+  --bg: #0D0D1A;
+  --text: #E0E0E0;
+}
+
+/* Reset */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* Landing Page */
+.landing-container {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 40%, #0a0f2c, #000015);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+}
+
+/* Stars Background */
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%; /* Double for seamless scroll */
+  background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+  animation: moveStars 40s linear infinite, twinkle 3s infinite ease-in-out alternate;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 6px #ffffff);
+  z-index: 0;
+}
+
+@keyframes moveStars {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); } /* Smooth loop */
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; filter: drop-shadow(0 0 3px #fff); }
+  50% { opacity: 0.8; filter: drop-shadow(0 0 8px #fff); }
+  100% { opacity: 0.4; filter: drop-shadow(0 0 4px #fff); }
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--hover);
+  background: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease, border 0.3s ease;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+}
+.cursor-hover {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Buttons */
+.btn {
+  background: var(--accent);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  z-index: 1;
+}
+.btn:hover {
+  background: var(--hover);
+  color: #000;
+  transform: scale(1.08);
+}
+
+/* Sidebar */
+.sidebar-logo img {
+  height: 60px;
+  margin-bottom: 20px;
+}
+.sidebar-btn {
+  display: block;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: left;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+.sidebar-btn:hover {
+  background: var(--hover);
+  color: #333;
+}
+
+/* Navbar (Dashboard) */
+nav {
+  background: var(--primary);
+  color: white;
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div class="custom-cursor"></div>
+
+<script type="text/babel">
+function App() {
+  const [page,setPage]=React.useState("landing");
+  const [isLoggedIn,setIsLoggedIn]=React.useState(false);
+  const [role,setRole]=React.useState(""),[id,setId]=React.useState(""),[name,setName]=React.useState("");
+  const [view,setView]=React.useState("home");
+  const [lastLogin,setLastLogin]=React.useState("");
+
+  if(page==="landing") return <Landing onStart={()=>setPage("login")}/>; 
+
+  if(!isLoggedIn && page==="login"){
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-[var(--secondary)]">
+        <Login onLogin={(r,i,nm)=>{
+          setRole(r);setId(i);setName(nm||"User");setLastLogin(new Date().toLocaleString());
+          setIsLoggedIn(true);setPage("dashboard");
+        }}/>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[var(--secondary)]">
+      <TopNav view={view} setView={setView} logout={()=>{setIsLoggedIn(false);setPage("landing");}}/>
+<main className="p-4">
+  <div key={view} className="animate-tab-transition">
+    {view==="home"?(role==="student"
+      ?<StudentDashboard name={name} roll={id} lastLogin={lastLogin}/>
+      :<FacultyDashboard name={name} empId={id} lastLogin={lastLogin}/>
+    ):view==="ai-helper"?<AIDoubtHelper/>:
+      view==="notifications"?<Notifications/>:
+      view==="help"?<HelpSection/>:
+      <h2 className="text-2xl text-center font-bold mt-10">Coming Soon...</h2>}
+  </div>
+</main>
+    </div>
+  );
+}
+function handleStart(e, onStart) {
+  // Trigger the page change
+  onStart();
+
+  // Create a burst container
+  const burstContainer = document.createElement("div");
+  burstContainer.className = "burst-container";
+  document.body.appendChild(burstContainer);
+
+  // Position at click point
+  const x = e.clientX;
+  const y = e.clientY;
+
+  burstContainer.style.left = `${x}px`;
+  burstContainer.style.top = `${y}px`;
+
+  // Generate particles
+  for (let i = 0; i < 15; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+
+    // Random directions
+    const angle = Math.random() * 360;
+    const distance = Math.random() * 100 + 30;
+    const xMove = Math.cos(angle) * distance + "px";
+    const yMove = Math.sin(angle) * distance + "px";
+
+    particle.style.setProperty("--x", xMove);
+    particle.style.setProperty("--y", yMove);
+
+    // Random color
+    const colors = ["#00E5FF", "#FF4081", "#8E24AA"];
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    burstContainer.appendChild(particle);
+
+    // Remove after animation
+    particle.addEventListener("animationend", () => {
+      particle.remove();
+    });
+  }
+
+  // Remove container after animation
+  setTimeout(() => {
+    burstContainer.remove();
+  }, 1000);
+}
+
+
+/* Landing Page */
+function Landing({onStart}){
+  return(
+    <div className="landing-container">
+      <div className="stars"></div>
+      <h1 className="text-6xl font-extrabold mb-4 animate-bounce z-10">Welcome to LearnMate</h1>
+      <p className="text-xl mb-8 z-10">AI-powered platform for smart learning in a galaxy of knowledge</p>
+      <button className="btn get-started-btn z-10" onClick={(e) => handleStart(e, onStart)}>
+  Get Started
+</button>
+    </div>
+  );
+}
+
+/* Top Navigation after login */
+function TopNav({view,setView,logout}){
+  const menu=[
+    {id:"home",label:"Home"},
+    {id:"ai-helper",label:"AI Helper"},
+    {id:"notifications",label:"Notifications"},
+    {id:"help",label:"Help"}
+  ];
+
+  return(
+    <nav className="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-[#0a0f2c] via-[#11142d] to-[#000015] text-white shadow-md border-b border-white/20 backdrop-blur-md relative">
+      {/* Logo & Title */}
+      <div className="flex items-center gap-3">
+        
+        <h1 className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-[#00E5FF] to-[#FF4081] bg-clip-text text-transparent">
+          LearnMate
+        </h1>
+      </div>
+
+      {/* Menu Buttons */}
+      <div className="flex gap-3">
+        {menu.map(m=>(
+          <button 
+            key={m.id} 
+            onClick={()=>setView(m.id)} 
+            className={`relative px-5 py-2 rounded-lg font-semibold text-white transition-all duration-300 ${
+              view===m.id
+              ? "bg-gradient-to-r from-[#00E5FF] to-[#FF4081] text-black shadow-lg"
+              : "hover:text-[#00E5FF]"
+            }`}
+          >
+            {m.label}
+          </button>
+        ))}
+        <button 
+          onClick={logout} 
+          className="px-5 py-2 rounded-lg font-semibold bg-[#FF4081] hover:bg-[#FF80AB] transition-all duration-300">
+          Logout
+        </button>
+      </div>
+    </nav>
+  );
+}
+/*Login*/
+function Login({ onLogin }) {
+  const [type, setType] = React.useState("student");
+  const [id, setId] = React.useState("");
+  const [pw, setPw] = React.useState("");
+  const [nm, setNm] = React.useState("");
+  const [isSignup, setIsSignup] = React.useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!id || !pw || (isSignup && !nm)) return alert("Fill all fields");
+
+    const url = isSignup ? "/api/signup" : "/api/login";
+    const payload = { role: type, rollNo: id, password: pw, name: nm };
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        onLogin(type, id, data.name || nm);
+        if (isSignup) setIsSignup(false); // Switch to login after signup
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error. Please try again.");
+    }
+  };
+
+  return (
+    <div className="min-h-screen w-full flex justify-center items-center bg-gradient-to-br from-[#0a0f2c] to-[#000015] relative overflow-hidden">
+      <div className="stars"></div>
+      <div className="relative z-10 p-8 w-full max-w-md bg-white/10 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 animate-fade-in">
+
+        {/* X Button to go back to Landing Page */}
+        <button
+          onClick={() => (window.location.href = "/")} // Change "/" to your landing page path if different
+          className="absolute top-4 right-4 text-white text-2xl font-bold hover:text-red-400 transition"
+        >
+          ✕
+        </button>
+
+        <div className="flex justify-center mb-6">
+        <img
+  src={
+    type === "student"
+      ? "https://cdn-icons-png.flaticon.com/512/924/924915.png"
+      : "https://cdn-icons-png.flaticon.com/512/4140/4140051.png"
+
+  }
+  alt="Role Avatar"
+  className="h-20 rounded-full shadow-lg"
+/>
+
+        </div>
+        <h1 className="text-3xl font-extrabold text-white mb-6">
+          {isSignup ? "Sign Up" : "Sign In"}
+        </h1>
+
+        <div className="flex justify-around mb-6">
+          <button
+            onClick={() => setType("student")}
+            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 ${
+              type === "student"
+                ? "bg-[#8E24AA] text-white"
+                : "bg-gray-600 text-gray-200 hover:bg-[#00E5FF] hover:text-black"
+            }`}
+          >
+            Student
+          </button>
+          <button
+            onClick={() => setType("faculty")}
+            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 ${
+              type === "faculty"
+                ? "bg-[#8E24AA] text-white"
+                : "bg-gray-600 text-gray-200 hover:bg-[#00E5FF] hover:text-black"
+            }`}
+          >
+            Faculty
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {isSignup && (
+            <input
+              className="border border-gray-500 bg-black/30 text-white rounded-lg w-full px-4 py-3"
+              placeholder="Full Name"
+              value={nm}
+              onChange={(e) => setNm(e.target.value)}
+            />
+          )}
+          <input
+            className="border border-gray-500 bg-black/30 text-white rounded-lg w-full px-4 py-3"
+            placeholder={type === "student" ? "Roll Number" : "Employee ID"}
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+          />
+          <input
+            type="password"
+            className="border border-gray-500 bg-black/30 text-white rounded-lg w-full px-4 py-3"
+            placeholder="Password"
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+          />
+          <button className="btn w-full bg-[#8E24AA] hover:bg-[#00E5FF] hover:text-black transition-all duration-300">
+            {isSignup ? "Sign Up" : "Login"}
+          </button>
+        </form>
+
+        <p
+          className="text-center text-gray-300 mt-4 cursor-pointer"
+          onClick={() => setIsSignup(!isSignup)}
+        >
+          {isSignup
+            ? "Already have an account? Sign In"
+            : "Don't have an account? Sign Up"}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+
+
+/* Sidebar */
+function Sidebar({sections,active,setActive}){
+  const icons = {
+    profile: "👤",
+    timetable: "📅",
+    materials: "📚",
+    attendance: "✅",
+    results: "📊"
+  };
+
+  return(
+    <aside className="w-64 p-6 rounded-2xl bg-white/10 backdrop-blur-xl shadow-lg border border-white/20 glass-sidebar">
+      <h2 className="text-xl font-bold mb-6 text-white tracking-wide">Dashboard</h2>
+      <div className="space-y-3">
+        {sections.map(tab=>(
+          <button 
+            key={tab} 
+            onClick={()=>setActive(tab)} 
+            className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-left font-semibold text-white transition-all duration-300 ${
+              active===tab
+              ? "bg-gradient-to-r from-[#00E5FF] to-[#FF4081] text-black shadow-lg scale-105"
+              : "hover:bg-white/10 hover:scale-105"
+            }`}
+          >
+            <span>{icons[tab] || "⭐"}</span>
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
+
+/* Student Dashboard */
+function StudentDashboard({ name, roll, lastLogin }) {
+  const [section, setSection] = React.useState("profile");
+  const [selectedBranch, setSelectedBranch] = React.useState(null);
+  const [selectedYear, setSelectedYear] = React.useState(null);
+
+  const attendanceData = [
+    { subject: "Math", total: 40, attended: 32 },
+    { subject: "DS", total: 42, attended: 34 },
+    { subject: "Python", total: 38, attended: 30 }
+  ];
+  const overallPct = Math.round(
+    attendanceData.reduce((s, a) => s + (a.attended / a.total) * 100, 0) /
+      attendanceData.length
+  );
+
+  const timetableData = {
+    CSE: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Physics", afternoon: "Programming" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Lab" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "DS", mid: "OOPS", afternoon: "OS" },
+        { day: "Tue", morning: "DBMS", mid: "Math-II", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "AI", mid: "ML", afternoon: "CN" },
+        { day: "Tue", morning: "DL", mid: "DBMS", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "Big Data", mid: "Cloud", afternoon: "Elective" },
+        { day: "Tue", morning: "AI Ethics", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    CSD: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Physics", afternoon: "Programming" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Workshop" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "DS", mid: "OOPS", afternoon: "AI Basics" },
+        { day: "Tue", morning: "DBMS", mid: "IoT", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "Cloud", mid: "ML", afternoon: "Cyber Security" },
+        { day: "Tue", morning: "Big Data", mid: "AI", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "Blockchain", mid: "IoT", afternoon: "Elective" },
+        { day: "Tue", morning: "Data Analytics", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    CSIT: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "English", afternoon: "Programming" },
+        { day: "Tue", morning: "Physics", mid: "Chemistry", afternoon: "Workshop" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "Java", mid: "DS", afternoon: "OS" },
+        { day: "Tue", morning: "DBMS", mid: "Web Tech", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "AI", mid: "CN", afternoon: "ML" },
+        { day: "Tue", morning: "DL", mid: "Big Data", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "IoT", mid: "Cloud", afternoon: "Elective" },
+        { day: "Tue", morning: "Cyber Security", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    CIC: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Physics", afternoon: "Programming" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Workshop" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "Networks", mid: "DS", afternoon: "Crypto" },
+        { day: "Tue", morning: "OS", mid: "Cyber Security", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "Ethical Hacking", mid: "Forensics", afternoon: "AI" },
+        { day: "Tue", morning: "Cloud", mid: "Blockchain", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "IoT Security", mid: "Big Data", afternoon: "Elective" },
+        { day: "Tue", morning: "Cyber Laws", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    AIML: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Programming", afternoon: "Physics" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Lab" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "DS", mid: "OOPS", afternoon: "AI Basics" },
+        { day: "Tue", morning: "Stats", mid: "Python", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "ML", mid: "DL", afternoon: "NLP" },
+        { day: "Tue", morning: "AI", mid: "Big Data", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "Cloud", mid: "Robotics", afternoon: "Elective" },
+        { day: "Tue", morning: "AI Ethics", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    AIDS: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Programming", afternoon: "Physics" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Lab" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "Stats", mid: "DS", afternoon: "AI Basics" },
+        { day: "Tue", morning: "Python", mid: "Visualization", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "ML", mid: "Big Data", afternoon: "DL" },
+        { day: "Tue", morning: "AI", mid: "Analytics", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "Cloud", mid: "Blockchain", afternoon: "Elective" },
+        { day: "Tue", morning: "Ethics in AI", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    ECE: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Physics", afternoon: "Programming" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Lab" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "Networks", mid: "Signals", afternoon: "DSP" },
+        { day: "Tue", morning: "VLSI", mid: "Microprocessors", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "IoT", mid: "Embedded Systems", afternoon: "AI Basics" },
+        { day: "Tue", morning: "Wireless", mid: "Robotics", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "Optical Networks", mid: "5G", afternoon: "Elective" },
+        { day: "Tue", morning: "Satellite Comms", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    EEE: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Physics", afternoon: "Programming" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Lab" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "Machines", mid: "Circuits", afternoon: "Power Systems" },
+        { day: "Tue", morning: "Control Systems", mid: "Electronics", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "Smart Grids", mid: "Embedded", afternoon: "AI Basics" },
+        { day: "Tue", morning: "Robotics", mid: "Automation", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "Renewable Energy", mid: "Power Electronics", afternoon: "Elective" },
+        { day: "Tue", morning: "Smart Systems", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    MEC: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Physics", afternoon: "Programming" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Lab" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "Mechanics", mid: "Thermo", afternoon: "Design" },
+        { day: "Tue", morning: "Dynamics", mid: "Workshop", afternoon: "CAD" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "Robotics", mid: "Automation", afternoon: "3D Printing" },
+        { day: "Tue", morning: "AI in Mech", mid: "Control Systems", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "Composite Materials", mid: "Simulation", afternoon: "Elective" },
+        { day: "Tue", morning: "Smart Manufacturing", mid: "Seminar", afternoon: "Project" }
+      ]
+    },
+    CIV: {
+      "1st Year": [
+        { day: "Mon", morning: "Math", mid: "Physics", afternoon: "Programming" },
+        { day: "Tue", morning: "English", mid: "Chemistry", afternoon: "Lab" }
+      ],
+      "2nd Year": [
+        { day: "Mon", morning: "Structures", mid: "Surveying", afternoon: "Concrete Tech" },
+        { day: "Tue", morning: "Hydraulics", mid: "GeoTech", afternoon: "Lab" }
+      ],
+      "3rd Year": [
+        { day: "Mon", morning: "Environmental Engg", mid: "Transport Engg", afternoon: "Design" },
+        { day: "Tue", morning: "Construction Mgmt", mid: "GIS", afternoon: "Project" }
+      ],
+      "4th Year": [
+        { day: "Mon", morning: "Smart Cities", mid: "Earthquake Engg", afternoon: "Elective" },
+        { day: "Tue", morning: "Advanced Structures", mid: "Seminar", afternoon: "Project" }
+      ]
+    }
+  };
+
+  React.useEffect(() => {
+    if (section === "attendance") {
+      const ctx = document.getElementById("studentPie");
+      if (ctx) {
+        new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: ["Present", "Absent"],
+            datasets: [
+              {
+                data: [overallPct, 100 - overallPct],
+                backgroundColor: ["#00E5FF", "#FF4081"]
+              }
+            ]
+          }
+        });
+      }
+    }
+  }, [section]);
+
+  return (
+    <div className="flex gap-6 mt-6 bg-gradient-to-br from-[#0a0f2c] to-[#000015] min-h-screen text-white p-6 rounded-xl">
+      <Sidebar
+        sections={["profile", "timetable", "materials", "attendance", "results"]}
+        active={section}
+        setActive={setSection}
+      />
+
+      <div className="flex-1">
+{section === "profile" && (
+  <div className="relative glass-card p-8 rounded-2xl shadow-lg text-white overflow-hidden">
+    {/* Background Animation */}
+    <div className="absolute inset-0 bg-gradient-to-br from-[#00E5FF] via-[#8E24AA] to-[#FF4081] opacity-20 blur-3xl"></div>
+
+    {/* Profile Header */}
+    <div className="flex items-center gap-6 mb-6 relative z-10">
+      <div className="w-24 h-24 rounded-full bg-gradient-to-r from-[#00E5FF] to-[#8E24AA] p-[3px]">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+          alt="Profile"
+          className="w-full h-full rounded-full object-cover"
+        />
+      </div>
+      <div>
+        <h2 className="text-3xl font-extrabold tracking-wide">{name}</h2>
+        <p className="text-lg text-gray-300">{roll}</p>
+      </div>
+    </div>
+
+    {/* Info Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-lg relative z-10">
+      <p className="flex items-center gap-3">
+        <span className="text-[#00E5FF]">📞</span> Mobile: +91 9876543210
+      </p>
+      <p className="flex items-center gap-3">
+        <span className="text-[#FF4081]">💬</span> WhatsApp: +91 9876543210
+      </p>
+      <p className="flex items-center gap-3">
+        <span className="text-[#00E5FF]">👨‍👩‍👦</span> Father: +91 9123456789
+      </p>
+      <p className="flex items-center gap-3">
+        <span className="text-[#FF4081]">👩‍👦</span> Mother: +91 9988776655
+      </p>
+      <p className="flex items-center gap-3">
+        <span className="text-[#00E5FF]">🆔</span> Aadhar: 1234-5678-9012
+      </p>
+      <p className="flex items-center gap-3">
+        <span className="text-[#FF4081]">🕒</span> Last Login: {lastLogin}
+      </p>
+    </div>
+
+    {/* Education Section */}
+    <div className="mt-8 bg-black/30 rounded-xl p-6 border border-white/20 shadow-inner relative z-10">
+      <h3 className="text-2xl font-bold mb-4 text-[#00E5FF]">📚 Educational Details</h3>
+      <ul className="list-disc pl-6 space-y-2 text-white text-lg">
+        <li><span className="text-[#FF4081] font-semibold">10th:</span> SSC Board, 2019, 9.8 GPA</li>
+        <li><span className="text-[#FF4081] font-semibold">Inter:</span> MPC, Narayana Jr. College, 2021, 95%</li>
+        <li><span className="text-[#FF4081] font-semibold">Present:</span> B.Tech CSE, 3rd Year, 8.7 CGPA</li>
+      </ul>
+    </div>
+  </div>
+)}
+
+
+
+        {section === "timetable" && (
+          <div className="glass-card p-8 rounded-2xl shadow-lg text-white">
+            <h3 className="text-2xl font-bold mb-4">Timetable</h3>
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold mb-2">Course: B.Tech</h4>
+            </div>
+            <div className="flex flex-wrap gap-3 mb-6">
+              {Object.keys(timetableData).map(branch => (
+                <button
+                  key={branch}
+                  onClick={() => {
+                    setSelectedBranch(branch);
+                    setSelectedYear(null);
+                  }}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 ${
+                    selectedBranch === branch
+                      ? "bg-gradient-to-r from-[#00E5FF] to-[#FF4081] text-black shadow-lg"
+                      : "bg-white/10 hover:bg-white/20"
+                  }`}
+                >
+                  {branch}
+                </button>
+              ))}
+            </div>
+
+            {selectedBranch && (
+              <div className="flex flex-wrap gap-3 mb-6">
+                {["1st Year", "2nd Year", "3rd Year", "4th Year"].map(year => (
+                  <button
+                    key={year}
+                    onClick={() => setSelectedYear(year)}
+                    className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 ${
+                      selectedYear === year
+                        ? "bg-gradient-to-r from-[#8E24AA] to-[#00E5FF] text-black shadow-lg"
+                        : "bg-white/10 hover:bg-white/20"
+                    }`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {selectedBranch && selectedYear ? (
+              <div>
+                <h4 className="text-xl font-bold mb-4">
+                  {selectedBranch} - {selectedYear} Timetable
+                </h4>
+                <table className="w-full text-left border border-white/20">
+                  <thead>
+                    <tr>
+                      <th className="p-2">Day</th>
+                      <th className="p-2">9-11 AM</th>
+                      <th className="p-2">11-1 PM</th>
+                      <th className="p-2">2-4 PM</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {timetableData[selectedBranch][selectedYear].map((row, i) => (
+                      <tr key={i}>
+                        <td className="p-2">{row.day}</td>
+                        <td>{row.morning}</td>
+                        <td>{row.mid}</td>
+                        <td>{row.afternoon}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : selectedBranch ? (
+              <p className="text-gray-300">Select a year to view the timetable.</p>
+            ) : (
+              <p className="text-gray-300">Select a branch to view its timetable.</p>
+            )}
+          </div>
+        )}
+
+{section === "materials" && (
+  <div className="glass-card p-8 rounded-2xl shadow-lg text-white">
+    <h3 className="text-3xl font-extrabold mb-6 text-center bg-gradient-to-r from-[#00E5FF] via-[#8E24AA] to-[#FF4081] bg-clip-text text-transparent animate-gradient-x">Study Materials</h3>
+    
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[
+        { title: "Python Notes", type: "PDF", link: "#", icon: "📘", color: "from-[#00E5FF] to-[#8E24AA]" },
+        { title: "DS Slides", type: "PPT", link: "#", icon: "📊", color: "from-[#8E24AA] to-[#FF4081]" },
+        { title: "Previous Year Papers", type: "PDF", link: "#", icon: "📄", color: "from-[#FF4081] to-[#00E5FF]" }
+      ].map((material, i) => (
+        <a
+          key={i}
+          href={material.link}
+          className={`block p-6 rounded-xl shadow-lg text-white bg-gradient-to-br ${material.color} hover:scale-105 transform transition duration-300 backdrop-blur-lg`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div className="text-4xl mb-4">{material.icon}</div>
+          <h4 className="text-xl font-bold mb-2">{material.title}</h4>
+          <p className="text-sm text-white/80">{material.type} Material</p>
+        </a>
+      ))}
+    </div>
+  </div>
+)}
+
+
+{section === "attendance" && (
+  <div className="glass-card p-8 rounded-2xl shadow-lg text-white space-y-6">
+    <h3 className="text-3xl font-extrabold mb-6 text-center bg-gradient-to-r from-[#00E5FF] via-[#8E24AA] to-[#FF4081] bg-clip-text text-transparent animate-gradient-x">Attendance Dashboard</h3>
+
+    {/* Donut Chart + Overall Stats */}
+    <div className="flex flex-col md:flex-row gap-6 items-center justify-around">
+      <div className="w-60 h-60">
+        <canvas id="studentPie"></canvas>
+      </div>
+
+      <div className="text-xl space-y-3">
+        <p>
+          ✅ <span className="font-semibold text-green-400">Present:</span> {overallPct}%
+        </p>
+        <p>
+          ❌ <span className="font-semibold text-red-400">Absent:</span> {100 - overallPct}%
+        </p>
+        <p>
+          📅 <span className="font-semibold text-yellow-400">Subjects Tracked:</span> {attendanceData.length}
+        </p>
+      </div>
+    </div>
+
+    {/* Subject Breakdown Table */}
+    <div className="overflow-x-auto mt-6">
+      <table className="min-w-full border border-white/20 rounded-xl overflow-hidden">
+        <thead className="bg-white/10">
+          <tr>
+            <th className="p-3 text-left">📚 Subject</th>
+            <th className="p-3 text-center">Attended</th>
+            <th className="p-3 text-center">Total</th>
+            <th className="p-3 text-center">%</th>
+          </tr>
+        </thead>
+        <tbody>
+          {attendanceData.map((subject, i) => {
+            const pct = Math.round((subject.attended / subject.total) * 100);
+            return (
+              <tr key={i} className="hover:bg-white/5 transition">
+                <td className="p-3">{subject.subject}</td>
+                <td className="p-3 text-center">{subject.attended}</td>
+                <td className="p-3 text-center">{subject.total}</td>
+                <td className={`p-3 text-center font-bold ${pct >= 75 ? 'text-green-400' : 'text-red-400'}`}>{pct}%</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
+
+
+       {section === "results" && (
+  <div className="glass-card p-8 rounded-2xl shadow-lg text-white space-y-6">
+    <h3 className="text-3xl font-extrabold mb-6 text-center bg-gradient-to-r from-[#00E5FF] via-[#8E24AA] to-[#FF4081] bg-clip-text text-transparent animate-gradient-x"> Semester Results</h3>
+
+    <div className="overflow-x-auto">
+      <table className="min-w-full border border-white/20 rounded-xl overflow-hidden">
+        <thead className="bg-white/10">
+          <tr>
+            <th className="p-3 text-left">📚 Subject</th>
+            <th className="p-3 text-center">Credits</th>
+            <th className="p-3 text-center">Grade</th>
+            <th className="p-3 text-center">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            { subject: "Mathematics – II", credits: 4, grade: "A+", points: 9 },
+            { subject: "Data Structures", credits: 3, grade: "S", points: 8 },
+            { subject: "Python Programming", credits: 3, grade: "S", points: 7 },
+            { subject: "Digital Logic Design", credits: 3, grade: "A", points: 10 },
+            { subject: "Engineering Physics", credits: 3, grade: "A", points: 8 },
+            { subject: "Computer Organization", credits: 3, grade: "B", points: 6 },
+            { subject: "English", credits: 2, grade: "A", points: 8 },
+            { subject: "Data Structures Lab", credits: 1.5, grade: "B", points: 10 },
+            { subject: "Python Lab", credits: 1.5, grade: "S", points: 9 },
+            { subject: "Environmental Science", credits: 2, grade: "B+", points: 7 }
+          ].map((s, i) => (
+            <tr key={i} className="hover:bg-white/5 transition">
+              <td className="p-3">{s.subject}</td>
+              <td className="p-3 text-center">{s.credits}</td>
+              <td className={`p-3 text-center font-bold ${
+                s.grade === "O" ? "text-green-400" :
+                s.grade === "A+" ? "text-blue-400" :
+                s.grade === "B+" ? "text-yellow-400" : "text-white"
+              }`}>{s.grade}</td>
+              <td className="p-3 text-center">{s.points}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div className="text-right text-lg mt-4">
+      <span className="text-gray-400">SGPA:</span>{" "}
+      <span className="text-[#00E5FF] font-bold">8.4</span> / 10
+    </div>
+  </div>
+)}
+
+      </div>
+    </div>
+  );
+}
+
+/* Faculty Dashboard */
+function FacultyDashboard({ name, empId, lastLogin }) {
+  const [section, setSection] = React.useState("profile");
+
+  return (
+    <div className="flex gap-6 mt-6 bg-gradient-to-br from-[#0a0f2c] to-[#000015] min-h-screen text-white p-6 rounded-xl">
+      {/* Sidebar */}
+      <Sidebar
+        sections={["profile", "timetable", "materials", "student details"]}
+        active={section}
+        setActive={setSection}
+      />
+
+      {/* Main Content */}
+      <div className="flex-1">
+        {section === "profile" && (
+  <div className="relative glass-card p-8 rounded-2xl shadow-lg text-white overflow-hidden">
+    <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 flex flex-col items-center gap-6 border border-white/20 shadow-inner">
+      
+      {/* Avatar */}
+      <div className="w-32 h-32 rounded-full bg-gradient-to-r from-[#00E5FF] to-[#8E24AA] p-[3px]">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+          alt="Avatar"
+          className="w-full h-full rounded-full object-cover"
+        />
+      </div>
+
+      {/* Profile Info */}
+{section === "profile" && (
+  <div className="glass-card p-8 rounded-2xl shadow-lg text-white space-y-4">
+    <h2 className="text-3xl font-bold mb-2">{name}</h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-lg">
+      <p><span className="text-[#00E5FF] font-semibold">Employee ID:</span> {empId}</p>
+      <p><span className="text-[#FF4081] font-semibold">Specialization:</span> Artificial Intelligence</p>
+      <p><span className="text-[#00E5FF] font-semibold">Department:</span> Computer Science</p>
+      <p><span className="text-[#FF4081] font-semibold">Experience:</span> 7 Years</p>
+    </div>
+  </div>
+)}
+    </div>
+  </div>
+)}
+      </div>
+    </div>
+  );
+}
+
+function Notifications() {
+  const [notifications, setNotifications] = React.useState([
+    { id: 1, text: "Python assignment due tomorrow!", type: "Assignment", time: "2 hrs ago", read: false },
+    { id: 2, text: "New materials uploaded for DBMS", type: "Material", time: "4 hrs ago", read: false },
+    { id: 3, text: "Upcoming exam schedule released", type: "Announcement", time: "Yesterday", read: true }
+  ]);
+
+  const markAllRead = () => {
+    setNotifications(notifications.map(n => ({ ...n, read: true })));
+  };
+
+  const clearAll = () => {
+    setNotifications([]);
+  };
+
+  const typeColors = {
+    Assignment: "bg-[#FF4081]",
+    Material: "bg-[#00E5FF]",
+    Announcement: "bg-[#8E24AA]"
+  };
+
+  return (
+    <div className="max-w-3xl mx-auto mt-6 glass-card p-8 rounded-2xl shadow-2xl text-white">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-4xl font-extrabold bg-gradient-to-r from-[#00E5FF] to-[#FF4081] bg-clip-text text-transparent">
+         Notifications
+        </h2>
+        <div className="flex gap-2">
+          <button
+            onClick={markAllRead}
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#8E24AA] text-black font-semibold shadow hover:scale-105 transition"
+          >
+            Mark All Read
+          </button>
+          <button
+            onClick={clearAll}
+            className="px-4 py-2 rounded-xl bg-red-500 text-white font-semibold shadow hover:bg-red-600 transition"
+          >
+            Clear All
+          </button>
+        </div>
+      </div>
+
+      {/* Notification List */}
+      {notifications.length === 0 ? (
+        <p className="text-center text-gray-300">🎉 You're all caught up!</p>
+      ) : (
+        <div className="space-y-4">
+          {notifications.map((n) => (
+            <div
+              key={n.id}
+              className={`flex items-start gap-4 p-4 rounded-xl bg-white/10 border border-white/20 backdrop-blur-lg hover:scale-[1.02] transition transform relative`}
+            >
+              {/* Colored Tag */}
+              <div className={`w-3 h-3 mt-1 rounded-full ${typeColors[n.type]}`}></div>
+
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <p className="font-semibold text-lg">{n.text}</p>
+                  <span
+                    className={`text-xs font-medium px-3 py-1 rounded-full ${
+                      typeColors[n.type]
+                    } text-black`}
+                  >
+                    {n.type}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-400 mt-1">{n.time}</p>
+              </div>
+
+              {!n.read && (
+                <span className="absolute top-2 right-2 w-2 h-2 bg-[#00E5FF] rounded-full animate-ping" />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+
+function HelpSection() {
+  return (
+    <div className="max-w-2xl mx-auto mt-10 glass-card p-8 rounded-2xl shadow-xl text-white text-center animate-fade-in">
+      {/* Header */}
+      <h2 className="text-4xl font-extrabold mb-4 bg-gradient-to-r from-[#00E5FF] to-[#FF4081] bg-clip-text text-transparent">
+        Need Help?
+      </h2>
+      <p className="text-lg text-gray-300 mb-6">
+        We're here to assist you on your learning journey.
+      </p>
+
+      {/* Contact Options */}
+      <div className="flex flex-col gap-4 mb-6">
+        <a
+          href="mailto:support@learnmate.com"
+          className="flex items-center justify-center gap-3 px-6 py-3 rounded-xl bg-[#00E5FF] text-black font-semibold transition transform hover:scale-105 hover:bg-[#FF4081]"
+        >
+          📧 Email Us — support@learnmate.com
+        </a>
+        <a
+          href="tel:+919876543210"
+          className="flex items-center justify-center gap-3 px-6 py-3 rounded-xl bg-[#8E24AA] text-white font-semibold transition transform hover:scale-105 hover:bg-[#00E5FF] hover:text-black"
+        >
+          📞 Call Us — +91 98765 43210
+        </a>
+      </div>
+
+      {/* Support Links */}
+      <div className="grid grid-cols-2 gap-4 mt-6 text-sm">
+        <a
+          href="#faq"
+          className="p-4 bg-white/10 backdrop-blur rounded-xl border border-white/20 hover:scale-105 transition"
+        >
+          📚 Frequently Asked Questions
+        </a>
+        <a
+          href="#docs"
+          className="p-4 bg-white/10 backdrop-blur rounded-xl border border-white/20 hover:scale-105 transition"
+        >
+          🧠 LearnMate User Guide
+        </a>
+      </div>
+
+      {/* Decorative Image */}
+      <div className="mt-8">
+        <img
+          src="https://cdn.dribbble.com/users/2046015/screenshots/15511339/media/10312fc66b3e003418f03fd0d331c537.png"
+          alt="Support Illustration"
+          className="mx-auto max-w-xs opacity-90"
+        />
+      </div>
+    </div>
+  );
+}
+
+
+function AIDoubtHelper() {
+  const [question, setQuestion] = React.useState("");
+  const [response, setResponse] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
+  const askAI = async () => {
+    if (!question.trim()) return;
+    setLoading(true);
+    setResponse("");
+
+    try {
+      const res = await fetch("/api/ask-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setResponse(data.answer);
+      } else {
+        setResponse("⚠️ " + (data.error || "Something went wrong"));
+      }
+    } catch (err) {
+      console.error(err);
+      setResponse("⚠️ Server error. Try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="glass-card p-8 rounded-2xl shadow-2xl text-white max-w-3xl mx-auto mt-10 space-y-6">
+      {/* Header */}
+      <h3 className="text-4xl font-extrabold text-center bg-gradient-to-r from-[#00E5FF] via-[#8E24AA] to-[#FF4081] bg-clip-text text-transparent animate-gradient-x">
+        AI Doubt Helper
+      </h3>
+      <p className="text-center text-gray-300 text-lg">Ask your academic questions and get instant help from LearnMate AI</p>
+
+      {/* Input Area */}
+      <textarea
+        className="w-full p-4 text-lg rounded-xl bg-black/30 border border-white/20 text-white placeholder:text-white/60 focus:ring-2 focus:ring-[#00E5FF] outline-none transition-all"
+        rows="4"
+        placeholder="Eg: What is the time complexity of Merge Sort?"
+        value={question}
+        onChange={(e) => setQuestion(e.target.value)}
+      />
+
+      {/* Submit Button */}
+      <div className="text-center">
+        <button
+          onClick={askAI}
+          disabled={loading}
+          className="px-8 py-3 bg-gradient-to-r from-[#00E5FF] to-[#FF4081] rounded-full text-black font-bold hover:scale-105 hover:shadow-xl transition-all duration-300 disabled:opacity-60"
+        >
+          {loading ? "Thinking..." : "Ask AI"}
+        </button>
+      </div>
+
+      {/* Response Area */}
+      {loading && (
+        <div className="text-center text-white animate-pulse">
+          <span className="text-xl">🤔</span> Generating response<span className="animate-bounce">...</span>
+        </div>
+      )}
+
+      {response && (
+        <div className="p-6 mt-4 bg-black/30 rounded-xl border border-green-400 text-white shadow-inner animate-fade-in">
+          <h4 className="text-xl font-semibold text-green-400 mb-2">💡 AI says:</h4>
+          <p className="text-lg leading-relaxed">{response}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+
+/* Render */
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
+/* Custom Cursor */
+const cursor=document.querySelector('.custom-cursor');
+document.addEventListener('mousemove',e=>{cursor.style.top=`${e.clientY}px`;cursor.style.left=`${e.clientX}px`;});
+document.querySelectorAll('button,a,input,textarea').forEach(el=>{el.addEventListener('mouseenter',()=>cursor.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>cursor.classList.remove('cursor-hover'));});
+</script>
+</body>
+</html>
