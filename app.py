@@ -52,7 +52,8 @@ init_db()
 # ---------- Routes ----------
 @app.route('/')
 def home():
-    return render_template('Project - LM.html')
+    return render_template('index.html')
+
 
 # ---------- Sign Up Route ----------
 @app.route('/api/signup', methods=['POST'])
